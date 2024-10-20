@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import clsx from 'clsx';
 import TrafficLight from './TrafficLight';
 import Alert from './Alert';
 
@@ -64,11 +65,11 @@ export default function Home() {
           The vehicle is approaching intersection #1
         </h2>
         <h2 className="text-center">
-          Your direction's traffic: {traffic1.toFixed(2)}
+          Your direction's traffic: <span className={clsx({'text-red-500': heavier === 1})}>{traffic1.toFixed(2)}</span>
         </h2>
         <TrafficLight color={trafficLight1} />
         <h2 className="text-center">
-          Other direction's traffic: {traffic2.toFixed(2)}
+          The other direction's traffic: <span className={clsx({'text-red-500': heavier === 2})}>{traffic2.toFixed(2)}</span>
         </h2>
         <TrafficLight color={trafficLight2} />
         <Alert msg={earthquakeAlert} />
