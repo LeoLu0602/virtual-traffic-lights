@@ -17,6 +17,15 @@ class TrafficLights:
         self.is_active = False
 
     def start(self):
+        # setup
+        supabase.table("intersection").upsert(
+            {
+                "id": self.intersection_id,
+                "traffic_light1": 'G',
+                "traffic_light2": 'R',
+            }
+        ).execute()
+        time.sleep(3)
         self.is_active = True
 
         while self.is_active:
@@ -48,10 +57,10 @@ class TrafficLights:
         )
         traffic1 = res.data[0]["traffic1"]
         traffic2 = res.data[0]["traffic2"]
-        traffic1 = traffic1 if traffic1 > 1 else 1
-        traffic2 = traffic2 if traffic2 > 1 else 1
+        traffic1 = max(traffic1, 1)
+        traffic2 = max(traffic2, 1)
         t1 = T * traffic1 / (traffic1 + traffic2)
-        t2 = T * traffic2 / (traffic1 + traffic2)
+        t2 = T - t1
         self.durations[0] = t1
         self.durations[2] = t2
         print("T1 & T2", t1, t2)

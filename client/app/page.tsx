@@ -11,7 +11,7 @@ const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 export default function Home() {
-  const [trafficLight1, setTrafficLight1] = useState<'R' | 'G'>('R');
+  const [trafficLight1, setTrafficLight1] = useState<'R' | 'G'>('G');
   const [trafficLight2, setTrafficLight2] = useState<'R' | 'G'>('R');
   const [traffic1, setTraffic1] = useState<number>(0);
   const [traffic2, setTraffic2] = useState<number>(0);
