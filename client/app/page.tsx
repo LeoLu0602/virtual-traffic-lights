@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import TrafficLight from './TrafficLight';
+import Alert from './Alert';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
@@ -13,6 +14,9 @@ export default function Home() {
   const [trafficLight2, setTrafficLight2] = useState<'R' | 'G'>('R');
   const [traffic1, setTraffic1] = useState<number>(0);
   const [traffic2, setTraffic2] = useState<number>(0);
+  const [earthquakeAlert, setEarthquakeAlert] = useState<string>('');
+  const heavier: 0 | 1 | 2 =
+    traffic1 === traffic2 ? 0 : traffic1 > traffic2 ? 1 : 2;
 
   useEffect(() => {
     const channel = supabase
@@ -31,6 +35,7 @@ export default function Home() {
             traffic_light2: 'R' | 'G';
             traffic1: number;
             traffic2: number;
+            earthquake_alert: string;
           };
         }) => {
           if (payload.new) {
@@ -38,6 +43,7 @@ export default function Home() {
             setTrafficLight2(payload.new.traffic_light2);
             setTraffic1(payload.new.traffic1);
             setTraffic2(payload.new.traffic2);
+            setEarthquakeAlert(payload.new.earthquake_alert);
           }
         }
       )
@@ -65,6 +71,7 @@ export default function Home() {
           Other direction's traffic: {traffic2.toFixed(2)}
         </h2>
         <TrafficLight color={trafficLight2} />
+        <Alert msg={earthquakeAlert} />
       </main>
     </>
   );
