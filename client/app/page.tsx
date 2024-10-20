@@ -15,20 +15,33 @@ export default function Home() {
   const [traffic2, setTraffic2] = useState<number>(0);
 
   useEffect(() => {
-    const channel = supabase.channel('channel')
+    const channel = supabase
+      .channel('channel')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'intersection', filter: 'id=eq.1', },
-        (payload) => {
+        {
+          event: '*',
+          schema: 'public',
+          table: 'intersection',
+          filter: 'id=eq.1',
+        },
+        (payload: {
+          new: {
+            traffic_light1: 'R' | 'G';
+            traffic_light2: 'R' | 'G';
+            traffic1: number;
+            traffic2: number;
+          };
+        }) => {
           if (payload.new) {
             setTrafficLight1(payload.new.traffic_light1);
             setTrafficLight2(payload.new.traffic_light2);
-            setTraffic1(payload.new.traffic1.toFixed(2));
-            setTraffic2(payload.new.traffic2.toFixed(2));
+            setTraffic1(payload.new.traffic1);
+            setTraffic2(payload.new.traffic2);
           }
         }
       )
-      .subscribe()
+      .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
@@ -37,15 +50,21 @@ export default function Home() {
 
   return (
     <>
-      <main className='flex flex-col justify-center items-center h-screen font-bold bg-gray-200'>
-        <h1 className='mb-8 text-2xl'>Virtual Traffic Lights for Self-Driving Cars</h1>
-        <h2 className='mb-8 text-xl text-sky-500'>The vehicle is approaching intersection #1</h2>
-        <section>
-          <h2 className='text-center'>Traffic: {traffic1}</h2>
-          <TrafficLight color={trafficLight1} />
-          <h2 className='text-center'>Traffic: {traffic2}</h2>
-          <TrafficLight color={trafficLight2} />
-        </section>
+      <main className="flex flex-col justify-center items-center h-screen font-bold bg-gray-100">
+        <h1 className="mb-8 text-3xl">
+          Virtual Traffic Lights for Self-Driving Cars
+        </h1>
+        <h2 className="mb-8 text-xl">
+          The vehicle is approaching intersection #1
+        </h2>
+        <h2 className="text-center">
+          Your direction's traffic: {traffic1.toFixed(2)}
+        </h2>
+        <TrafficLight color={trafficLight1} />
+        <h2 className="text-center">
+          Other direction's traffic: {traffic2.toFixed(2)}
+        </h2>
+        <TrafficLight color={trafficLight2} />
       </main>
     </>
   );
