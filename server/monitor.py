@@ -8,13 +8,10 @@ from supabase import create_client
 load_dotenv()
 supabase = create_client(os.getenv("URL"), os.getenv("KEY"))
 
-
 def reset(self):
     self.classwise_counts = {}
 
-
 solutions.ObjectCounter.reset = reset
-
 
 class Monitor:
     def __init__(self, intersection_id, direction, T):
