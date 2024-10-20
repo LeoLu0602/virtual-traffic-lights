@@ -1,7 +1,7 @@
 from monitor import Monitor
 
 def main():
-	T = 3 # update frequency
+	T = 10 # update frequency
 	monitor = Monitor(1, 2, T)
 	monitor.start()
 

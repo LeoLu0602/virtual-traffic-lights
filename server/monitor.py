@@ -3,7 +3,7 @@ from ultralytics import solutions
 import threading
 import os
 from dotenv import load_dotenv
-from supabase import create_client, Client
+from supabase import create_client
 
 load_dotenv()
 supabase = create_client(os.getenv("URL"), os.getenv("KEY"))
