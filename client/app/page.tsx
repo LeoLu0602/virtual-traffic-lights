@@ -16,8 +16,6 @@ export default function Home() {
   const [traffic1, setTraffic1] = useState<number>(0);
   const [traffic2, setTraffic2] = useState<number>(0);
   const [earthquakeAlert, setEarthquakeAlert] = useState<string>('');
-  const heavier: 0 | 1 | 2 =
-    traffic1 === traffic2 ? 0 : traffic1 > traffic2 ? 1 : 2;
 
   useEffect(() => {
     const channel = supabase
@@ -65,11 +63,17 @@ export default function Home() {
           The vehicle is approaching intersection #1
         </h2>
         <h2 className="text-center">
-          Your direction's traffic: <span className={clsx({'text-red-500': heavier === 1})}>{traffic1.toFixed(2)}</span>
+          Your direction's traffic:{' '}
+          <span className={clsx({ 'text-red-500': traffic1 > traffic2 })}>
+            {traffic1.toFixed(2)}
+          </span>
         </h2>
         <TrafficLight color={trafficLight1} />
         <h2 className="text-center">
-          The other direction's traffic: <span className={clsx({'text-red-500': heavier === 2})}>{traffic2.toFixed(2)}</span>
+          The other direction's traffic:{' '}
+          <span className={clsx({ 'text-red-500': traffic2 > traffic1 })}>
+            {traffic2.toFixed(2)}
+          </span>
         </h2>
         <TrafficLight color={trafficLight2} />
         <Alert msg={earthquakeAlert} />
