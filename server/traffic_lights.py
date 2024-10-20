@@ -48,8 +48,8 @@ class TrafficLights:
         )
         traffic1 = res.data[0]["traffic1"]
         traffic2 = res.data[0]["traffic2"]
-        traffic1 = traffic1 if traffic1 > 0 else 1
-        traffic2 = traffic2 if traffic2 > 0 else 1
+        traffic1 = traffic1 if traffic1 > 1 else 1
+        traffic2 = traffic2 if traffic2 > 1 else 1
         t1 = T * traffic1 / (traffic1 + traffic2)
         t2 = T * traffic2 / (traffic1 + traffic2)
         self.durations[0] = t1
